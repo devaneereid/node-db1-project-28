@@ -51,21 +51,37 @@ router.post('/', (req, res) => {
             });
 });
 
-// PATCH Request 
-router.patch('/:id', (req, res) => {
+// PUT Request
+router.put('/:id', (req, res) => {
     const changes = req.body;
-    const { id } = req.params;
+    const id = req.params.id;
     db('accounts')
         .where({ id })
         .update(changes)
         .then(count => {
-            if (count > 0) {
-                res.status(200).json({ message: 'Update request successful' })
-            } else {
+            res.status(200).json(count)
+            })
+            .catch(error => {
+                console.log('PUT Error', error)
                 res.status(404).json({ message: 'No Accounts by that ID found' });
-            }
-        });
+            });
 });
+
+// PATCH Request 
+// router.patch('/:id', (req, res) => {
+//     const changes = req.body;
+//     const { id } = req.params;
+//     db('accounts')
+//         .where({ id })
+//         .update(changes)
+//         .then(count => {
+//             if (count > 0) {
+//                 res.status(200).json({ message: 'Update request successful' })
+//             } else {
+//                 res.status(404).json({ message: 'No Accounts by that ID found' });
+//             }
+//         });
+// });
 
 // DELETE Request
 router.delete('/:id', (req, res) => {
